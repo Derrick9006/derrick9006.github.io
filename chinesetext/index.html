@@ -1,1 +1,68 @@
+<link rel="stylesheet" href="main.css">
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+<h3>輸入文字</h3>
+<textarea id="text">
+</textarea>
+</br></br>
+<button id="submit">轉換</button>
+<pre id="change">
+</pre>
+</br></br>
+<button id="submit" onclick="copyClipboard()">點我複製</button>
+
+<script>
+function getid(x){
+return document.getElementById(x);
+}
+
+getid("submit").addEventListener("click", fnSubmit);
+
+function fnSubmit(){
+var text = getid("text").value;
+var changeone = text.split("\n");
+var comtext = ".\n";
+var maxlong =0;
+var loop=0;
+do{
+for(var i=changeone.length-1; i>=0; i--){
+var changetwo = changeone[i].split("");
+if(changetwo[loop] == undefined || changetwo[loop] == " ")
+comtext += "····";
+else
+comtext += changetwo[loop];
+if(maxlong < changetwo.length) maxlong=changetwo.length;
+}
+comtext+="\n";
+loop++;
+} while(maxlong > loop);
+
+getid("change").innerText=comtext;
+getid("myInput").value=comtext;
+}
+
+function copyClipboard() {
+  var elm = document.getElementById("change");
+  // for Internet Explorer
+
+  if(document.body.createTextRange) {
+    var range = document.body.createTextRange();
+    range.moveToElementText(elm);
+    range.select();
+    document.execCommand("Copy");
+    alert("文字成功複製");
+  }
+  else if(window.getSelection) {
+    // other browsers
+
+    var selection = window.getSelection();
+    var range = document.createRange();
+    range.selectNodeContents(elm);
+    selection.removeAllRanges();
+    selection.addRange(range);
+    document.execCommand("Copy");
+    alert("文字成功複製");
+  }
+}
+</script>
